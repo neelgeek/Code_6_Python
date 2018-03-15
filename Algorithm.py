@@ -65,12 +65,20 @@ orders_string='''
 #---------------------------------------------------example json--------------------------------------------------------------
 
 
-states_from={}
-states_to={}
+#states_from={}
+#states_to={}
+
+
 states_final={}
 orders_dict=json.loads(orders_string)
+
+
 #print(orders_dict['orders'][0]['order_id'])
-print(len(orders_dict['orders']))
+
+
+#print(len(orders_dict['orders']))
+
+
 '''for i in range(len(orders_dict['orders'])):
     #print(orders_dict['orders'][i]['order_id'])
     if orders_dict['orders'][i]['from'] not in states_from:
@@ -85,7 +93,10 @@ print(len(orders_dict['orders']))
     else:
         states_to[orders_dict['orders'][i]['to']].append(i)
 '''
-#traversing from dict
+
+
+#creating master dictionary
+
 for i in range(len(orders_dict['orders'])):
     if orders_dict['orders'][i]['from'] not in states_final:
         states_final[orders_dict['orders'][i]['from']]={}
@@ -102,8 +113,63 @@ for i in range(len(orders_dict['orders'])):
             states_final[orders_dict['orders'][i]['from']][orders_dict['orders'][i]['to']].append(i) 
     
 print(states_final)
+
+
 #print(states_to)
+
+
+def returnSum(group_orders):
+    total=0
+    for item in group_orders:
+        total+=int(orders_dict['orders'][item]['quantity'])
+
+    return total
+
+
+#small=100 ,medium =500 ,large =1000
+
+def createTruckRequest(total ,i):
+    if total<=100:
+        global sm
+        sm+=i
+    elif total>100 and total <=500:
+        global me
+        me+=i
+    elif total>500 and total <=1000:
+        global la
+        la+=i
+    else:
+        q=int(total/1000)
+        r=total%1000
+        la+=q
+        createTruckRequest(r,1)
+
+
+        
+    
+    
+
+#finding order indices
+group_orders=[]
+group_orders_dict={}#dictionary which contains lsit of required trucks
+total=0
+sm=me=la=0
 for each in states_final:
      for s in (states_final[each]):
-         print (states_final[each][s])
+         group_orders=(states_final[each][s])
+         total=returnSum(group_orders)
+         #print(each)
+         print(total)
+         if each not in group_orders_dict:
+             group_orders_dict[each]=[]
+             sm=me=la=0
+             createTruckRequest(total,1)
+             group_orders_dict[each]=[sm,me,la]
+         else:
+            sm=me=la=0
+            createTruckRequest(total,1)
+            group_orders_dict[each]=[sm,me,la]
+            
          
+
+print(group_orders_dict)
