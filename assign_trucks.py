@@ -4,39 +4,36 @@ from Algorithm import group_orders_dict
 
 trucks_string='''
 {
-    "trucks":
-        {
-            "Andhra Pradesh":{
-                "Small":['1','2','3'],
-                "Medium":['11','12','13'],
-                "Large":['21','22','23']
+    "trucks":{
+        "Andhra Pradesh":{
+                "Small":["1","2","3"],
+                "Medium":["11","12","13"],
+                "Large":["21","22","23"]
             },
-        
-        
-            "Punjab":{
-                "Small":['31','32','33'],
-                "Medium":['41','42','43'],
-                "Large":['51','52','53']
+            
+        "Punjab":{
+                "Small":["31","32","33"],
+                "Medium":["41","42","43"],
+                "Large":["51","52","53"]
             },
-        
-            "Uttar Pradesh":{
-                "Small":['311','321','331'],
-                "Medium":['411','421','431'],
-                "Large":['511','521','531']
+
+        "Uttar Pradesh":{
+                "Small":["311","321","331"],
+                "Medium":["411","421","431"],
+                "Large":["511","521","531"]
             },
              
-            "West Bangal":{
-                "Small":['321','322','323'],
-                "Medium":['421','422','423'],
-                "Large":['521','522','523']
+        "West Bangal":{
+                "Small":["321","322","323"],
+                "Medium":["421","422","423"],
+                "Large":["521","522","523"]
             }
-            
-        }
+        
+     }
     
 }
 '''
 trucks_dict=json.loads(trucks_string)
-
 trucks_assigned = {} #key = truckid , value = group
 
 #Assigns trucks based on grouped truck request.
