@@ -113,7 +113,7 @@ for i in range(len(orders_dict['orders'])):
         else:
             states_final[orders_dict['orders'][i]['from']][orders_dict['orders'][i]['to']].append(i)
 
-print(states_final)
+print("States_Final: ",states_final)
 
 
 # print(states_to)
@@ -146,7 +146,10 @@ def createTruckRequest(total, i):
 
 
 # finding order indices
+
 group_orders = []
+groups = []
+group_ids = []
 group_orders_dict = {}  # dictionary which contains lsit of required trucks
 total = 0
 sm = me = la = 0
@@ -154,18 +157,29 @@ for each in states_final:
     for s in (states_final[each]):
         group_orders = (states_final[each][s])
         total = returnSum(group_orders)
+        groups.append(group_orders)
         # print(each)
         # print(total)
         if each not in group_orders_dict:
             group_orders_dict[each] = []
             sm = me = la = 0
             createTruckRequest(total, 1)
-            group_orders_dict[each] = [sm, me, la]
+            group_orders_dict[each].append([sm, me, la])
         else:
             sm = me = la = 0
             createTruckRequest(total, 1)
-            group_orders_dict[each] = [sm, me, la]
-
-print(group_orders_dict)
+            group_orders_dict[each].append([sm, me, la])
+print("Groups : ",groups)
+print("Group_orders_dict: ",group_orders_dict)
 # for each in group_orders_dict:
 #     print(group_orders_dict[each])
+def generate_groups_with_ids():
+    for each in states_final:
+        for bitch in states_final[each]:
+            group_index_list = states_final[each][bitch]
+            list = []
+            for i in group_index_list:
+                list.append(orders_dict['orders'][i]['order_id'])
+            group_ids.append(list)
+generate_groups_with_ids()
+print("Group ids: ",group_ids)
