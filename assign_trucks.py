@@ -1,8 +1,8 @@
-import json,requests,urllib
+import json, requests
 import sys
 from Algorithm import group_orders_dict
 
-trucks_string='''
+trucks_string = '''
 {
     "trucks":{
         "Andhra Pradesh":{
