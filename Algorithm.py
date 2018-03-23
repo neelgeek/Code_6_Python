@@ -62,7 +62,18 @@ orders_string='''
     ]
 }
 '''
-
+new = '''
+{
+    "merchant_id": "5aac1483aaf3a919a4de8251",
+    "farmer_id": "5aac14a8aaf3a919a4de8252",
+    "produce_id": "5ab24f25b6057f2c38a15f52",
+    "origin": "Raigad",
+    "destination": "Thane",
+    "weight": 1200,
+    "_id": "5ab2b57a691d501e341935c7",
+    "__v": 0
+}
+'''
 
 #---------------------------------------------------example json--------------------------------------------------------------
 
@@ -147,12 +158,17 @@ def createTruckRequest(total, i):
 
 # finding order indices
 
-group_orders = []
+
 groups = []
-group_ids = []
-group_orders_dict = {}  # dictionary which contains lsit of required trucks
+group_ids = [] #list containing list of group ids arranged sequentially wrt group_orders_dict
+group_orders = []
+group_orders_dict = {}# dictionary which contains lsit of required trucks
 total = 0
 sm = me = la = 0
+
+
+#def generate_group_orders_dict(states_final):
+
 for each in states_final:
     for s in (states_final[each]):
         group_orders = (states_final[each][s])
@@ -169,6 +185,9 @@ for each in states_final:
             sm = me = la = 0
             createTruckRequest(total, 1)
             group_orders_dict[each].append([sm, me, la])
+    #return group_orders_dict
+#g = generate_group_orders_dict(states_final)
+
 print("Groups : ",groups)
 print("Group_orders_dict: ",group_orders_dict)
 # for each in group_orders_dict:
@@ -183,3 +202,14 @@ def generate_groups_with_ids():
             group_ids.append(list)
 generate_groups_with_ids()
 print("Group ids: ",group_ids)
+
+def format_json(response):
+    orders_dict = {"orders":[]}
+    for each in range(len(response)):
+        #print(each)
+        orders_dict["orders"].append({})
+        orders_dict["orders"][each]["order_id"] = response[each]["_id"]
+        orders_dict["orders"][each]["from"] = response[each]["origin"]
+        orders_dict["orders"][each]["to"] = response[each]["destination"]
+        orders_dict["orders"][each]["quantity"] = response[each]["weight"]
+    return orders_dict

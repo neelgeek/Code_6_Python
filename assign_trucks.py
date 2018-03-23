@@ -80,7 +80,11 @@ def assign_truck(group_orders_dict):
                 index += 1
 
 assign_truck(group_orders_dict)
-print('Assigned :')
-print(trucks_assigned)
-print('Unassigned :')
-print(unassigned_groups)
+
+final_dict = {"Assigned":trucks_assigned,"Unassigned":unassigned_groups}
+
+# print('Assigned :')
+# print(json.dumps(trucks_assigned))
+print('Final:')
+print(json . dumps(final_dict))
+
