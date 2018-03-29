@@ -1,6 +1,5 @@
 import json, requests
-import sys
-from Algorithm import group_orders_dict, states_final ,group_ids
+from Algorithm import group_orders_dict, group_ids
 
 trucks_string = '''
 {
@@ -33,26 +32,26 @@ trucks_string = '''
     
 }
 '''
-trucks_dict=json.loads(trucks_string)
-# trucks_dict = {'trucks':{}}
-# get_json=requests.get('https://code6sihapi.herokuapp.com/truckCompany/getTrucks').json()
+#trucks_dict=json.loads(trucks_string)
+trucks_dict = {'trucks':{}}
+get_json=requests.get('https://code6sihapi.herokuapp.com/truckCompany/getTrucks').json()
 
 trucks_assigned = {} #key = truckid , value = group
 unassigned_groups = []
 #Formats incoming json into my desired dictionary format.
 
-# def reformat_json(get_json):
-#     for each in get_json:
-#         trucks_dict['trucks'][each['_id']]= {}
-#         for bitch in each['trucksid']:
-#             #print(bitch['type'])
-#             if bitch['type'] not in trucks_dict['trucks'][each['_id']]:
-#                 trucks_dict['trucks'][each['_id']][bitch['type']] = []
-#                 trucks_dict['trucks'][each['_id']][bitch['type']].append(bitch['id'])
-#             else:
-#                 trucks_dict['trucks'][each['_id']][bitch['type']].append(bitch['id'])
-# reformat_json(get_json)
-
+def reformat_json(get_json):
+    for each in get_json:
+        trucks_dict['trucks'][each['_id']]= {}
+        for bitch in each['trucksid']:
+            #print(bitch['type'])
+            if bitch['type'] not in trucks_dict['trucks'][each['_id']]:
+                trucks_dict['trucks'][each['_id']][bitch['type']] = []
+                trucks_dict['trucks'][each['_id']][bitch['type']].append(bitch['id'])
+            else:
+                trucks_dict['trucks'][each['_id']][bitch['type']].append(bitch['id'])
+reformat_json(get_json)
+print("Trucks_dict:",trucks_dict)
 #Assigns trucks based on grouped truck request.
 def assign_truck(group_orders_dict):
     index = 0
@@ -86,5 +85,8 @@ final_dict = {"Assigned":trucks_assigned,"Unassigned":unassigned_groups}
 # print('Assigned :')
 # print(json.dumps(trucks_assigned))
 print('Final:')
-print(json . dumps(final_dict))
-
+final = json. dumps(final_dict)
+print(final)
+headers = {'content-type': 'application/json'}
+resp = requests.post(url = "https://code6sihapi.herokuapp.com/shareRequest/postGroups", data =json. dumps(final_dict) , headers = headers).json()
+print ("Response: ", resp)

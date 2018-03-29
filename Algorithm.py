@@ -1,5 +1,5 @@
-import json
-
+import json,requests,urllib
+from datetime import datetime,timedelta
 orders_string='''
 {
     "orders":[
@@ -80,10 +80,29 @@ new = '''
 
 #states_from={}
 #states_to={}
+previous_date = datetime.now() - timedelta(days=3)
+s= previous_date.isoformat()
+dict = {}
+dict["date"] = s
+print(dict)
+response = requests.post(url="https://code6sihapi.herokuapp.com/shareRequest/getRequests", data = dict ).json()
+print(response)
+
+def format_json(response):
+    orders_dict = {"orders":[]}
+    for each in range(len(response)):
+        #print(each)
+        orders_dict["orders"].append({})
+        orders_dict["orders"][each]["order_id"] = response[each]["_id"]
+        orders_dict["orders"][each]["from"] = response[each]["origin"]
+        orders_dict["orders"][each]["to"] = response[each]["destination"]
+        orders_dict["orders"][each]["quantity"] = response[each]["weight"]
+    return orders_dict
 
 
+orders_dict = format_json(response)
 states_final={}
-orders_dict=json.loads(orders_string)
+#orders_dict=json.loads(orders_string)
 
 
 #print(orders_dict['orders'][0]['order_id'])
@@ -140,13 +159,13 @@ def returnSum(group_orders):
 # small=100 ,medium =500 ,large =1000
 
 def createTruckRequest(total, i):
-    if total <= 100:
+    if total <= 10000:
         global sm
         sm += i
-    elif total > 100 and total <= 500:
+    elif total > 10000 and total <= 15000:
         global me
         me += i
-    elif total > 500 and total <= 1000:
+    elif total > 15000 and total <= 30000:
         global la
         la += i
     else:
